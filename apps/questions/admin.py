@@ -15,6 +15,8 @@ class QuestionAdmin(admin.ModelAdmin):
         AnswerAdminInline,
     ]
     list_display = ('text', 'qtype')
+    search_fields = ('text',)
+    list_filter = ('qtype',)
 
 
 class TopicQuestionRelationAdminInline(admin.TabularInline):
@@ -28,6 +30,7 @@ class TopicAdmin(admin.ModelAdmin):
         TopicQuestionRelationAdminInline,
     ]
     list_display = ('title', 'description')
+    search_fields = ('title', 'description')
 
 
 admin.site.register(Question, QuestionAdmin)

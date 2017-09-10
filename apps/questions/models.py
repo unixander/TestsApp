@@ -24,7 +24,7 @@ class Question(models.Model):
     qtype = models.IntegerField(_('Type'), choices=QTYPES, default=QTYPE_RADIO)
 
     def __str__(self):
-        return '{}: {}'.format(self.order, self.text)
+        return self.text
 
     @property
     def is_radio(self):

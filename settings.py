@@ -9,7 +9,7 @@ APPS_DIR = ROOT_DIR.path('apps')
 
 sys.path.append('apps')
 
-# Another metod to manage local settings
+# Another metod to separate local settings from production or test settings
 environ.Env.read_env(env_file=os.path.join(str(ROOT_DIR), '.env'))
 env = environ.Env()
 

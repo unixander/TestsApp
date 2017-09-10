@@ -68,18 +68,21 @@ class AnswerInlineFormSet(BaseInlineFormSet):
     def clean(self):
         super().clean()
         correct_count = 0
+        filled_count = 0
         for form in self.forms:
             if not form.is_valid():
                 return  # There are other errors
-            if form.cleaned_data and form.cleaned_data.get('is_correct'):
-                correct_count += 1
+            if form.cleaned_data:
+                filled_count += 1
+                if form.cleaned_data.get('is_correct'):
+                    correct_count += 1
             if self.instance.is_radio and correct_count > 1:
                 raise forms.ValidationError(_('Only one correct answer is allowed for this question type.'))
 
         if not correct_count:
             raise forms.ValidationError(_('Please choose correct answer.'))
 
-        if correct_count == len(self.forms):
+        if correct_count == filled_count:
             raise forms.ValidationError(_('All answers cannot be correct.'))
 
 
