@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans 'Topic' %}-{{topic.title}}{% endblock %}
+
+{% block content %}
+<div class="card container">
+  <div class="card-body">
+    <h4 class="card-title">{{topic.title}}</h4>
+    <h6 class="card-subtitle mb-2 text-muted">{% trans 'Question' %} {{number}}</h6>
+    <p class="card-text">{{question.text}}</p>
+    <form action="" method="post">
+        {% csrf_token %}
+        {% for error in form.non_field_errors %}
+            <div class="alert alert-danger" role="alert">
+              {{ error|escape}}
+            </div>
+          {% endfor %}
+        <fieldset class="form-group">
+        {% for field in form %}
+            {% for error in field.errors %}
+                <div class="alert alert-danger" role="alert">
+                  {{ error|escape}}
+                </div>
+            {% endfor %}
+            {% if question.is_radio %}
+                {% for choice in field %}
+                <div class="form-check">
+                      <label class="form-check-label">
+                        {{choice}}
+                      </label>
+                </div>
+                {% endfor %}
+            {% else %}
+            <div class="form-check">
+                  {% for error in field.errors %}
+                    <div class="alert alert-danger" role="alert">
+                      {{ error|escape}}
+                    </div>
+                  {% endfor %}
+                  <label class="form-check-label">
+                    {{field}}{{ field.label_tag }}
+                  </label>
+            </div>
+            {% endif %}
+        {% endfor %}
+        </fieldset>
+        <input class="btn btn-primary" type="submit" value="Submit"/>
+    </form>
+  </div>
+  <div class="progress">
+  {% with ratio=topic_result.answered_ratio|floatformat %}
+  <div class="progress-bar progress-bar-striped" role="progressbar" style="width: {{ratio}}%" aria-valuenow="{{ratio}}" aria-valuemin="0" aria-valuemax="100">{%if ratio %}{{ratio}}%{% endif %}</div>
+  {% endwith %}
+  </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans 'Topic' %}-{{topic.title}}{% endblock %}
+
+{% block content %}
+<div class="jumbotron">
+  <h1 class="display-3">{{topic.title}}</h1>
+  <p class="lead">{{topic.description}}</p>
+  <hr class="my-4">
+  {% if topic_result and topic_result.date_finished %}
+  <p>{% trans 'Congratulation! You\'ve finished this topic.' %}</p>
+  <p>{% trans 'Your results:'%} </p>
+  <table class="table">
+  <thead class="thead-inverse">
+    <tr>
+      <th>{% trans 'Correct' %}</th>
+      <th>{% trans 'Errors' %}</th>
+      <th>{% trans 'Total' %}</th>
+      <th>{% trans 'Success Rate' %}</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>{{topic_result.correct_count}}</td>
+      <td>{{topic_result.incorrect_count}}</td>
+      <td>{{topic_result.total_count}}</td>
+      <td>{{topic_result.correct_ratio|floatformat}}%</td>
+    </tr>
+  </tbody>
+</table>
+<div class="progress">
+  {% with correct=topic_result.correct_ratio|floatformat incorrect=topic_result.incorrect_ratio|floatformat %}
+  <div class="progress-bar bg-success" role="progressbar" style="width: {{correct}}%" aria-valuenow="{{correct}}" aria-valuemin="0" aria-valuemax="100">{%if correct %}{{correct}}%{% endif %}</div>
+  <div class="progress-bar bg-danger" role="progressbar" style="width: {{incorrect}}%" aria-valuenow="{{incorrect}}" aria-valuemin="0" aria-valuemax="100">{% if incorrect %}{{incorrect}}%{% endif %}</div>
+  {% endwith %}
+</div>
+  {% else %}
+      <p class="lead">
+          <form action="" method="post">
+            {% csrf_token %}
+            <input type="submit" class="btn btn-primary btn-lg" value="Go to questions"/>
+          </form>
+      </p>
+    <div class="progress">
+  {% with ratio=topic_result.answered_ratio|floatformat %}
+  <div class="progress-bar progress-bar-striped" role="progressbar" style="width: {{ratio}}%" aria-valuenow="{{ratio}}" aria-valuemin="0" aria-valuemax="100">{%if ratio %}{{ratio}}%{% endif %}</div>
+  {% endwith %}
+</div>
+  {% endif %}
+
+</div>
+
+{% endblock %}

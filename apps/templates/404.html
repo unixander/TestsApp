@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans 'Page Not found' %}{% endblock %}
+
+{% block content %}
+<div class="container">
+<h1>{% trans 'Page Not found' %}</h1>
+
+<p> {% trans 'This is not the page you were looking for.' %}</p>
+</div>
+{% endblock content %}
+
+{% block breadcrumb %}{% endblock %}

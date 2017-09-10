@@ -1,0 +1,35 @@
+{% extends "account/base.html" %}
+
+{% load i18n widget_tweaks %}
+
+{% block head_title %}{% trans "Signup" %}{% endblock %}
+
+{% block content %}
+<div class="wrapper-form">
+    <h2>{% trans 'Sign Up' %}</h2>
+
+    <p>{% blocktrans %}Already have an account? Then please <a href="{{ login_url }}">log in</a>.{% endblocktrans %}</p>
+
+    <form class="signup form-horizontal" id="signup_form" method="post" action="{% url 'account_signup' %}">
+      {% csrf_token %}
+      <fieldset>
+          {% for field in form %}
+          <div class="form-group row">
+            <label class="col-sm-3 control-label" form="{{ field.id_for_label }}">{{ field.label|capfirst }}</label>
+            <div class="col-sm-9">
+                {% render_field field class='form-control' placeholder=field.label|capfirst %}
+                <div class="errors">{{ field.errors }}</div>
+            </div>
+        </div>
+          {% endfor %}
+      </fieldset>
+      {% if redirect_field_value %}
+      <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+      {% endif %}
+      <div class="text-center">
+            <button class="btn btn-primary btn-lg text-uppercase" type="submit">{% trans "Sign Up" %} &raquo;</button>
+        </div>
+    </form>
+</div>
+
+{% endblock %}

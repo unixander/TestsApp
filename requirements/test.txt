@@ -1,0 +1,6 @@
+-r base.txt
+
+# Here are test required packages, let's keep production server clean
+
+django-nose==1.4.5
+coverage==4.4.1
