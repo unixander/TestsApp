@@ -1,9 +1,6 @@
 # Tests App
 
-
-
 ## Admin dashboard
-
 
 ### Users
 
